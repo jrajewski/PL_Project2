@@ -41,7 +41,7 @@ def goldbach(n: Int): Unit = {
 
   var aList: List[Int] = List.range(1, n)
   aList = aList.filter(q => prime(q))
-  aList.forall(r => foreach(r + _))
+  //aList.forall(r => foreach(r + _))
   aList
   /*
 The Goldbach Conjecture states
