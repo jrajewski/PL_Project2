@@ -117,6 +117,7 @@ def convertBooleanListToIntList(booleanList: List[Boolean]): List[Int] = boolean
 */
 def binaryAddition(pList: List[Int], qList: List[Int]): List[Int] = {
   //wouldn't the first carry bit just be false?
+  //look 2 lines up Joe
   convertBooleanListToIntList(doBinaryAddition(convertIntListToBooleanList(pList).reverse, convertIntListToBooleanList(qList).reverse, false)).reverse
 }
 
