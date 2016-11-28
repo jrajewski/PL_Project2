@@ -1,8 +1,5 @@
 val chinese: List[String] = List("ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu", "shi")
 val english: List[String] = List("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
-val numerals: List[Int] = List(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-
-//var translated: List[Int] = Nil
 
 def member(element: String, aList: List[String]): Boolean = {
   aList match {
@@ -12,9 +9,10 @@ def member(element: String, aList: List[String]): Boolean = {
 }
 
 //testing member class
-member("zero", english)
+/*member("zero", english)
 member("ling", chinese)
 member("zero", chinese)
+*/
 
 def intersection(aList: List[String], anotherList: List[String]): List[String] = {
   anotherList match {
@@ -31,37 +29,63 @@ def go(calc: List[String]): Unit = {
   val chineseElements: List[String] = intersection(calc, chinese)
 
   //merge the 2 lists
-  val toCalculate: List[String] = englishElements ::: chineseElements
-  val toWork: List[Int] = Nil
+  val toTranslate: List[String] = englishElements ::: chineseElements
 
-  val translated: List[Int] = translation(toCalculate, toWork)
+  val translated: List[Int] = translation(toTranslate)
 
-  if (translated.isEmpty) print("You failed, again.")
+  print("Translation: ")
+  translated.foreach(x => print(x + " "))
+  println()
+
+  //conditional system used to print the correct icon until the last element before printing the sum/product
+  print("Addition: ")
+  val end = translated.length
+  var count: Int = 0
+  val sum: Int = addition(translated)
+  translated.foreach(x => if(count < end - 1){ print(x +  " + "); count+=1} else print(x + " "))
+  println("= " + addition(translated))
+
+  print("Multiplication: ")
+  count = 0
+  val product: Int = multiplication(translated)
+  translated.foreach(x => if(count < end - 1){ print(x +  " * "); count+=1} else print(x + " "))
+  println("= " + multiplication(translated))
+
 }
 
-go(List("zero", "one"))
+//Test cases
+go(List("zero", "one", "joe", "san", "three"))
+go(List("one", "er", "three", "si", "error"))
 
-def translation(input: List[String], work: List[Int]): List[Int] = {
-  //val listHead: String = input.head
+def translation(input: List[String]): List[Int] = {
+  input.map {
+      case "ling" | "zero" => 0//translation(input.tail, 0 :: work)
+      case "yi" | "one" => 1 //translation(input.tail, 1 :: work)
+      case "er" | "two" => 2// translation(input.tail, 2 :: work)
+      case "san" | "three" => 3 //translation(input.tail, 3 :: work)
+      case "si" | "four" => 4//translation(input.tail, 4 :: work)
+      case "wu" | "five" => 5//translation(input.tail, 5 :: work)
+      case "liu" | "six" => 6//translation(input.tail, 6 :: work)
+      case "qi" | "seven" => 7//translation(input.tail, 7 :: work)
+      case "ba" | "eight" => 8//translation(input.tail, 8 :: work)
+      case "jiu" | "nine" => 9//translation(input.tail, 9 :: work)
+      case "shi" | "ten" => 10//translation(input.tail, 10 :: work)
+  }
+}
 
-  val inputEmpty: Boolean = input.isEmpty
-  inputEmpty match {
-    case false =>
-      input.head match {
-        case "ling" | "zero" => translation(input.tail, 0 :: work)
-        case "yi" | "one" => translation(input.tail, 1 :: work)
-        case "er" | "two" => translation(input.tail, 2 :: work)
-        case "san" | "three" => translation(input.tail, 3 :: work)
-        case "si" | "four" => translation(input.tail, 4 :: work)
-        case "wu" | "five" => translation(input.tail, 5 :: work)
-        case "liu" | "six" => translation(input.tail, 6 :: work)
-        case "qi" | "seven" => translation(input.tail, 7 :: work)
-        case "ba" | "eight" => translation(input.tail, 8 :: work)
-        case "jiu" | "nine" => translation(input.tail, 9 :: work)
-        case "shi" | "ten" => translation(input.tail, 10 :: work)
-      }
-      if (work.isEmpty == false) work.foreach(println(_))
-      return work
-    case true => work
+def addition(input: List[Int]): Int = {
+  input match {
+    //if there are no more elements remaining, just pass back a zero in the recursion so no more is added
+    case n :: rest => n + addition(rest)
+    case Nil => 0
+  }
+}
+
+def multiplication(input: List[Int]): Int = {
+  input match {
+    //if there are no more remaining elements, pass back a 1 because anything multiplied by one
+    //will not change the product
+    case n :: rest => n * multiplication(rest)
+    case Nil => 1
   }
 }

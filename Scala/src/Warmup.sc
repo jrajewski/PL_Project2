@@ -45,19 +45,106 @@ def twinPrimesList(n: Int): List[Int] = {
   cList.distinct
 }
 
+twinPrimesList(80)
 twinPrimesList(50)
 
+//Old attempt to use prime filtering. Thought would be efficient, but could not
+//determine an efficient solution, let alone a working solution
 
-def goldbach(n: Int): Unit = {
-  if(n < 2) System.exit(0)
+/*
+def goldbachHelp(y: Int, element: Int, listTail: Int, primeList: List[Int]): Unit = {
+  //declared as var because could not reassign to val
+  var tempTail: Int = listTail
+  var tempElement: Int = element
+  //println("tempElement = " + tempElement)
+  //println("tempTail = " + tempTail)
+  //println()
+  (primeList(element) + primeList(listTail) == y) match{
+    case true => println(primeList(element) + " + " + primeList(listTail) + " = " + y)
+      System.exit(0)
+    case false =>
+      tempTail -= 1
+      tempTail >= 0 match{
+        case true =>
+          tempElement < primeList.length match{
+            case true =>
+              goldbachHelp(y, tempElement, tempTail, primeList)
+              tempTail match{
+                  //resets tail value
+                case 0 => tempTail = primeList.length - 1
+                case _ => Nil
+              }
 
-  var aList: List[Int] = List.range(1, n)
-  aList = aList.filter(q => prime(q))
+            case false => println("You did something wrong, Joe.")
+          }
+        case false =>
 
-  //not working
-  //aList.forall(r => foreach(r + _))
+      }
+      //goldbachHelp(y, tempElement, tempTail, primeList)
 
 
+  }
 }
 
+
+def goldbach(x: Int): Unit = {
+  val continue = (x % 2 == 0) && (x > 2)
+  continue match{
+    case true =>
+      var aList: List[Int] = List.range(1, x)
+      aList = aList.filter(q => prime(q))
+      println(aList)
+      println(aList.length)
+      goldbachHelp(x, 0, (aList.length - 1), aList)
+    case false =>
+      println("Value must be even and greater than 2 for Goldbach's Conjecture.")
+  }
+}
+
+goldbach(15)
+goldbach(16)
+//goldbach(50)
+*/
+
+
+def goldbach(x: Int): Unit ={
+  val continue = (x % 2 == 0) && (x > 2)
+  continue match{
+    case true=>
+      //send 1 and x - 1 to start looking for combinations that add up to x
+      //skip 0 and x because neither are prime
+      var a = 1; var b = x - 1
+      goldbachAssist(a, b, x )
+    case false =>
+      println("Value must be even and greater than 2 for Goldbach's Conjecture.")
+  }
+}
+
+def goldbachAssist(a: Int, b: Int, x: Int): Unit = {
+  val bothPrime = prime(a) && prime(b)
+  bothPrime match{
+    case true =>
+      //determines whether a sum of 2 primes is the value submitted to goldbach
+      val done = (a + b == x)
+      done match{
+        case true => println(a + " + " + b + " = " + x)
+        //no need for false case. a and b will always add up to x in done because
+        //every combination from 1 - x-1 is scanned
+      }
+  //increase the lower bound by 1 and decrease the upper bound by 1
+  //ensures that only combinations that add up to x will be selected
+    case false => val c = a + 1
+      val d = b - 1
+      goldbachAssist(c, d, x)
+  }
+}
+
+//Test cases
 goldbach(50)
+goldbach(48)
+goldbach(47)
+goldbach(10)
+goldbach(18)
+goldbach(38)
+goldbach(22)
+goldbach(1000)
