@@ -10,27 +10,39 @@ def twinPrime(x: Int, y: Int): Boolean ={
   var first, second: Boolean = false
   //var second: Boolean = false
 
+  //only checks for primality if the numbers differ by 2
+  //if they don't then there is no need to continue calculation
   if (z == 2 || z == -2){
     first = prime(x)
     second = prime(y)
   }
 
+  //return if both elements passed are prime
+  //false by default
   first && second
 }
 
+//2 test cases for twinprime
 twinPrime(41, 43)
 twinPrime(29, 31)
 
 def twinPrimesList(n: Int): List[Int] = {
+  //in my solution, two lists are required. see comments below
   var aList: List[Int] = List.range(3,n)
   var bList: List[Int] = List.range(3,n)
   //bList.filter(o => prime(o))
 
+  //created two lists with twinPrime function, one to check two integers behind the current elements
+  //and another list to check two integers ahead of the current element
   aList = aList.filter(p => twinPrime(p, p - 2))
   bList = bList.filter(o => twinPrime(o, o + 2))
 
-  val cList: List[Int] = aList ::: bList
-  cList.sortWith(_ < _)
+  //combine both sets of twin prime lists
+  var cList: List[Int] = aList ::: bList
+
+  //sorts combined twinprimes list least to greatest
+  cList = cList.sortWith(_ < _)
+  cList.distinct
 }
 
 twinPrimesList(50)
@@ -41,17 +53,11 @@ def goldbach(n: Int): Unit = {
 
   var aList: List[Int] = List.range(1, n)
   aList = aList.filter(q => prime(q))
-  //aList.forall(r => foreach(r + _))
-  aList
-  /*
-The Goldbach Conjecture states
-that every positive even number greater than 2 is the sum of two prim numbers.
-For example, 28 = 5 + 23. Your function is to find the two prime numbers that
-sum up to a given even integer and print the composition. For example goldbach(28)
-would print 5 + 23 = 28. You should provide error checking to make sure the integer
- parameter is even and greater than 2.
 
- */
+  //not working
+  //aList.forall(r => foreach(r + _))
 
 
 }
+
+goldbach(50)
